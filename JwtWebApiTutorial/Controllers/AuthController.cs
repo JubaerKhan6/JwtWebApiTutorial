@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,6 +20,13 @@ namespace JwtWebApiTutorial.Controllers
         public AuthController(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+        [HttpGet("ShowUsername"), Authorize]
+        public ActionResult<string> GetMe()
+        {
+            var userName = User?.Identity?.Name;
+            return Ok(userName);
+
         }
 
         [HttpPost("register")]
